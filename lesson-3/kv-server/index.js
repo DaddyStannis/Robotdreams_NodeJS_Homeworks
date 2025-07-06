@@ -8,7 +8,7 @@ const fastify = Fastify({logger: true});
 const REDIS_URL = process.env.REDIS_URL;
 const PORT = process.env.PORT || 3000;
 
-fastify.get("/get/:key", async function handler(request, reply) {
+fastify.get("/get/:key", async function handler(request) {
     const query = new URLSearchParams({
         key: request.params.key,
     }).toString();
@@ -16,7 +16,7 @@ fastify.get("/get/:key", async function handler(request, reply) {
     return response.json();
 });
 
-fastify.post("/set", async function handler(request, reply) {
+fastify.post("/set", async function handler(request) {
     const response = await fetch(REDIS_URL + "/set", {
         method: "POST",
         body: JSON.stringify(request.body),
