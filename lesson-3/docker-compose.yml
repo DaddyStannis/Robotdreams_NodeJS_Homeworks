@@ -1,0 +1,29 @@
+services:
+  redis:
+    build:
+      context: ./redis-like
+      dockerfile: Dockerfile.redis
+    image: redis-like
+    environment:
+      - PORT=4000
+    networks:
+      - internal
+    expose:
+      - "4000"
+
+  kv:
+    build:
+      context: ./kv-server
+      dockerfile: Dockerfile.kv
+    image: kv-server
+    ports:
+      - "8080:3000"
+    environment:
+      - REDIS_URL=http://redis:4000
+      - PORT=3000
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
